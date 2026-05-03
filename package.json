@@ -6,6 +6,9 @@
   "_moduleAliases": {
     "@": "src"
   },
+  "prisma": {
+    "schema": "prisma/schema.prisma"
+  },
   "scripts": {
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
