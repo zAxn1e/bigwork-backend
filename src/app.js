@@ -80,28 +80,11 @@ function resolveForwardedBaseUrl(req) {
 }
 
 const absoluteMediaDir = path.resolve(process.cwd(), mediaBaseDir);
-const absoluteFrontendDocsDistDir = path.resolve(process.cwd(), frontendDocsDistDir);
 fs.mkdirSync(path.join(absoluteMediaDir, "profiles"), { recursive: true });
 fs.mkdirSync(path.join(absoluteMediaDir, "uploads"), { recursive: true });
 fs.mkdirSync(path.join(absoluteMediaDir, "thumbnails"), { recursive: true });
 
 app.use("/media", express.static(absoluteMediaDir));
-
-if (frontendDocsEnabled) {
-    if (fs.existsSync(absoluteFrontendDocsDistDir)) {
-        app.use(frontendDocsPath, express.static(absoluteFrontendDocsDistDir));
-    } else {
-        app.get(frontendDocsPath, (_req, res) => {
-            res.status(503).json({
-                success: false,
-                message: "Frontend docs build not found. Run `npm run docs:frontend:build` first.",
-                data: {
-                    expectedDir: absoluteFrontendDocsDistDir,
-                },
-            });
-        });
-    }
-}
 
 app.get("/openapi.json", (_req, res) => {
     const hasExplicitOpenApiEnv =

@@ -8,22 +8,6 @@
 
 ถ้าต้องการแนวทางฝั่ง frontend แบบละเอียด ให้ดูที่
 - docs/FRONTEND_GUIDE.md
-- /frontend-guide (Docusaurus ที่เสิร์ฟผ่าน backend)
-
-รัน docs site แบบพ่วง backend
-
-```bash
-npm run docs:frontend:install
-npm run dev:with-frontend-docs
-```
-
-รัน docs site แยกเดี่ยว
-
-```bash
-cd frontend-docs
-npm install
-npm start
-```
 
 ## Base URL
 
