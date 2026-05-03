@@ -3,15 +3,10 @@ require("module-alias/register");
 
 const app = require("@/app");
 const {
-  port,
-  frontendDocsEnabled,
-  frontendDocsPath,
+  port
 } = require("@/config/env");
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
   console.log(`API Docs running on http://localhost:${port}/docs`);
-  if (frontendDocsEnabled) {
-    console.log(`Frontend Docs running on http://localhost:${port}${frontendDocsPath}`);
-  }
 });

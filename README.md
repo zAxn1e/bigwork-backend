@@ -81,10 +81,6 @@ src/
 docs/
   API.md
   FRONTEND_GUIDE.md
-frontend-docs/
-  docs/
-  docusaurus.config.js
-  sidebars.js
 ```
 
 ## 4) ขั้นตอนติดตั้ง
@@ -160,9 +156,6 @@ DATABASE_URL="postgresql://postgres:postgres@localhost:5432/bigwork_mini?schema=
 - MAX_UPLOAD_FILE_SIZE_MB: ขนาดไฟล์อัปโหลดสูงสุด (MB)
 - WEBP_QUALITY: คุณภาพไฟล์ webp (ค่าเริ่มต้น 95)
 - THUMBNAIL_WIDTH: ความกว้าง thumbnail (ค่าเริ่มต้น 320)
-- FRONTEND_DOCS_ENABLED: เปิด/ปิดการเสิร์ฟ Docusaurus docs ผ่าน backend
-- FRONTEND_DOCS_PATH: path ที่จะเปิด docs จาก backend (ค่าเริ่มต้น `/frontend-guide`)
-- FRONTEND_DOCS_DIST_DIR: ตำแหน่งไฟล์ build ของ Docusaurus (ค่าเริ่มต้น `frontend-docs/build`)
 
 ## 6) Prisma Commands
 
@@ -179,15 +172,6 @@ npm run prisma:studio
 npm run dev
 # หรือ
 npm start
-```
-
-ถ้าต้องการให้ backend เสิร์ฟ frontend docs (Docusaurus) พร้อมกันใน process เดียว
-
-```bash
-npm run docs:frontend:install
-npm run dev:with-frontend-docs
-# หรือ
-npm run start:with-frontend-docs
 ```
 
 ค่าเริ่มต้นเซิร์ฟเวอร์จะรันที่ http://localhost:3000
@@ -227,15 +211,10 @@ Swagger docs
   - `proxy_set_header X-Forwarded-Host $host;`
   - `proxy_set_header X-Forwarded-Proto $scheme;`
 
-Frontend docs (เสิร์ฟจาก backend)
-- URL: http://localhost:3000/frontend-guide
-- เปลี่ยน path ได้ด้วย `FRONTEND_DOCS_PATH`
-
 เอกสารเพิ่มเติม
 - API summary: docs/API.md
 - Frontend integration guide (ละเอียด): docs/FRONTEND_GUIDE.md
 - Team handoff (backend runbook): docs/TEAMMATE_BACKEND_INSTRUCTIONS.md
-- Frontend docs site (Docusaurus): frontend-docs/
 
 ## 8) การ seed ข้อมูล
 
