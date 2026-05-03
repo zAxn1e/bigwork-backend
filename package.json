@@ -28,7 +28,6 @@
     "jsonwebtoken": "^9.0.2",
     "module-alias": "^2.3.4",
     "multer": "^2.0.2",
-    "pg": "^8.20.0",
     "prisma": "^6.19.0",
     "sharp": "^0.34.4",
     "swagger-ui-express": "^5.0.1"
