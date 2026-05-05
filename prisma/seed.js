@@ -15,7 +15,7 @@ async function main() {
   const [admin, freelancer1, freelancer2, client1, client2] = await Promise.all([
     prisma.user.create({
       data: {
-        email: "admin@internal.local",
+        email: "admin@bigwork.com",
         passwordHash,
         displayName: "System Admin",
         firstName: "System",
@@ -29,7 +29,7 @@ async function main() {
     }),
     prisma.user.create({
       data: {
-        email: "freelancer1@internal.local",
+        email: "freelancer1@bigwork.com",
         passwordHash,
         displayName: "Narin Dev",
         firstName: "Narin",
@@ -43,7 +43,7 @@ async function main() {
     }),
     prisma.user.create({
       data: {
-        email: "freelancer2@internal.local",
+        email: "freelancer2@bigwork.com",
         passwordHash,
         displayName: "Mali Design",
         firstName: "Mali",
@@ -57,7 +57,7 @@ async function main() {
     }),
     prisma.user.create({
       data: {
-        email: "client1@internal.local",
+        email: "client1@bigwork.com",
         passwordHash,
         displayName: "Acme Team",
         firstName: "Acme",
@@ -71,7 +71,7 @@ async function main() {
     }),
     prisma.user.create({
       data: {
-        email: "client2@internal.local",
+        email: "client2@bigwork.com",
         passwordHash,
         displayName: "Orbit Studio",
         firstName: "Orbit",
@@ -149,7 +149,7 @@ async function main() {
       clientId: client2.id,
       sellerId: gigs[1].ownerId,
       agreedPrice: 8000,
-      status: "IN_PROGRESS",
+      status: "COMPLETED",
       message: "Brand refresh and landing page concept",
     },
   });

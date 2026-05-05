@@ -40,6 +40,7 @@ x-api-key: <INTERNAL_API_KEY>
 
 Public endpoints
 - GET /health
+- GET /public/landing/summary
 - กลุ่ม auth/profile/media-assets ใช้ JWT เป็นหลักและไม่ผ่าน middleware api-key
 
 Protected endpoints
@@ -71,6 +72,25 @@ Error
 ```
 
 ## Endpoints
+
+### Public
+
+#### GET /public/landing/summary
+
+สรุปข้อมูลสาหรับหน้า landing page (ไม่ต้องใช้ JWT หรือ x-api-key)
+
+Example success
+
+```json
+{
+  "success": true,
+  "data": {
+    "freelancersCount": 12,
+    "completedOrders": 54,
+    "averageRating": 4.6
+  }
+}
+```
 
 ### Auth / JWT
 

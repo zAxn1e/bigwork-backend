@@ -23,6 +23,7 @@ flowchart TB
   subgraph PublicAndJwt["Public + JWT Systems (no apiKey middleware)"]
     Health["GET /health"]
     Docs["GET /docs + /openapi.json"]
+    Public["/public/*"]
     Auth["/auth/*"]
     Profile["/profile/*"]
     MediaAssets["/media-assets/*"]
@@ -38,6 +39,7 @@ flowchart TB
 
   App --> Health
   App --> Docs
+  App --> Public
   App --> Auth
   App --> Profile
   App --> MediaAssets
@@ -74,6 +76,7 @@ flowchart LR
   CORS --> OpenAPI["/openapi.json resolver"]
   CORS --> Swagger["/docs swagger-ui"]
   CORS --> Health["/health"]
+  CORS --> Public["/public"]
   CORS --> Auth["/auth"]
   CORS --> Profile["/profile (requireJwtAuth)"]
   CORS --> MediaAssets["/media-assets (requireJwtAuth)"]
@@ -90,6 +93,7 @@ flowchart LR
   Orders --> NotFound
   Reviews --> NotFound
   Admin --> NotFound
+  Public --> NotFound
   Auth --> NotFound
   Profile --> NotFound
   MediaAssets --> NotFound

@@ -13,6 +13,7 @@
 - profile (อ่าน/แก้ไขโปรไฟล์)
 - profile image upload (media เก็บใน backend)
 - media assets ทั่วไป (upload/list/get/delete)
+- public landing summary (สรุปข้อมูลหน้า landing page)
 
 โค้ดถูกออกแบบให้ทีมอ่านง่ายและขยายต่อได้ โดยทุก business endpoint จะถูกป้องกันด้วย API key ผ่าน header x-api-key
 

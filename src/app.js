@@ -2,11 +2,7 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const {
-    mediaBaseDir,
-    frontendDocsEnabled,
-    frontendDocsPath,
-    frontendDocsDistDir,
-    openApiServerUrls,
+    mediaBaseDir
 } = require("@/config/env");
 const apiKeyAuth = require("@/middlewares/apiKeyAuth");
 const notFound = require("@/middlewares/notFound");
@@ -19,6 +15,7 @@ const gigRoutes = require("@/routes/gig.routes");
 const orderRoutes = require("@/routes/order.routes");
 const reviewRoutes = require("@/routes/review.routes");
 const adminRoutes = require("@/routes/admin.routes");
+const publicRoutes = require("@/routes/public.routes");
 const cors = require("cors");
 
 const app = express();
@@ -32,50 +29,6 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "x-api-key", "Authorization"],
 }));
 app.use(express.json());
-
-function firstHeaderValue(value) {
-    return String(value || "")
-        .split(",")[0]
-        .trim();
-}
-
-function isLocalHostname(hostname) {
-    const normalized = String(hostname || "").trim().toLowerCase();
-    return (
-        normalized === "localhost" ||
-        normalized === "0.0.0.0" ||
-        normalized === "::1" ||
-        normalized.startsWith("127.")
-    );
-}
-
-function isLocalServerUrl(url) {
-    try {
-        const parsed = new URL(url);
-        return isLocalHostname(parsed.hostname);
-    } catch (_error) {
-        return false;
-    }
-}
-
-function resolveRequestBaseUrl(req) {
-    const forwardedProto = firstHeaderValue(req.get("x-forwarded-proto"));
-    const host = req.get("host");
-    const proto = forwardedProto || req.protocol || "http";
-    if (!host) {
-        return null;
-    }
-    return `${proto}://${host}`;
-}
-
-function resolveForwardedBaseUrl(req) {
-    const forwardedProto = firstHeaderValue(req.get("x-forwarded-proto"));
-    const forwardedHost = firstHeaderValue(req.get("x-forwarded-host"));
-    if (!forwardedHost) {
-        return null;
-    }
-    return `${forwardedProto || "https"}://${forwardedHost}`;
-}
 
 const absoluteMediaDir = path.resolve(process.cwd(), mediaBaseDir);
 fs.mkdirSync(path.join(absoluteMediaDir, "profiles"), { recursive: true });
@@ -97,6 +50,7 @@ app.get("/health", (_req, res) => {
 app.use("/auth", authRoutes);
 app.use("/profile", profileRoutes);
 app.use("/media-assets", mediaRoutes);
+app.use("/public", publicRoutes);
 
 app.use(apiKeyAuth);
 
