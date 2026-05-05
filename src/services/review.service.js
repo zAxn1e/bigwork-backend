@@ -10,6 +10,10 @@ async function createReview(payload) {
     throw new AppError(404, "Order not found");
   }
 
+  if (order.sellerId === payload.authorId) {
+    throw new AppError(403, "Gig owners cannot review their own gigs");
+  }
+
   const existingReview = await prisma.review.findUnique({
     where: { orderId: payload.orderId },
   });
