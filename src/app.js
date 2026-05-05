@@ -1,8 +1,6 @@
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
-const swaggerUi = require("swagger-ui-express");
-const { openApiSpec } = require("@/docs/openapi");
 const {
     mediaBaseDir,
     frontendDocsEnabled,
@@ -85,40 +83,6 @@ fs.mkdirSync(path.join(absoluteMediaDir, "uploads"), { recursive: true });
 fs.mkdirSync(path.join(absoluteMediaDir, "thumbnails"), { recursive: true });
 
 app.use("/media", express.static(absoluteMediaDir));
-
-app.get("/openapi.json", (_req, res) => {
-    const hasExplicitOpenApiEnv =
-        Boolean(String(process.env.OPENAPI_SERVER_URL || "").trim()) ||
-        Boolean(String(process.env.OPENAPI_SERVER_URLS || "").trim());
-    const forwardedBaseUrl = resolveForwardedBaseUrl(_req);
-    const requestBaseUrl = resolveRequestBaseUrl(_req);
-    const hasOnlyLocalConfiguredServers =
-        openApiServerUrls.length > 0 &&
-        openApiServerUrls.every((url) => isLocalServerUrl(url));
-    const effectiveServerUrls =
-        forwardedBaseUrl
-            ? [forwardedBaseUrl]
-            : requestBaseUrl && (!hasExplicitOpenApiEnv || hasOnlyLocalConfiguredServers)
-            ? [requestBaseUrl]
-            : openApiServerUrls;
-
-    res.json({
-        ...openApiSpec,
-        servers: effectiveServerUrls.map((url) => ({ url })),
-    });
-});
-
-app.use(
-    "/docs",
-    swaggerUi.serve,
-    swaggerUi.setup(undefined, {
-        explorer: true,
-        customSiteTitle: "BigWork Internal API Docs",
-        swaggerOptions: {
-            url: "/openapi.json",
-        },
-    }),
-);
 
 app.get("/health", (_req, res) => {
     res.json({

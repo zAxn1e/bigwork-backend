@@ -8,5 +8,4 @@ const {
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
-  console.log(`API Docs running on http://localhost:${port}/docs`);
 });
