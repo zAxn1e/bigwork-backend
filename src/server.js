@@ -8,4 +8,6 @@ const {
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
+  console.log(`Docs is running on http://localhost:${port}/docs`);
+  console.log(`OpenAPI is running on http://localhost:${port}/openapi.json`);
 });

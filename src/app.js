@@ -1,8 +1,14 @@
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
+const swaggerUi = require("swagger-ui-express");
+const { openApiSpec } = require("@/docs/openapi");
 const {
-    mediaBaseDir
+  mediaBaseDir,
+  frontendDocsEnabled,
+  frontendDocsPath,
+  frontendDocsDistDir,
+  openApiServerUrls,
 } = require("@/config/env");
 const apiKeyAuth = require("@/middlewares/apiKeyAuth");
 const notFound = require("@/middlewares/notFound");
@@ -30,12 +36,106 @@ app.use(cors({
 }));
 app.use(express.json());
 
+function firstHeaderValue(value) {
+  return String(value || "")
+    .split(",")[0]
+    .trim();
+}
+
+function isLocalHostname(hostname) {
+  const normalized = String(hostname || "").trim().toLowerCase();
+  return (
+    normalized === "localhost" ||
+    normalized === "0.0.0.0" ||
+    normalized === "::1" ||
+    normalized.startsWith("127.")
+  );
+}
+
+function isLocalServerUrl(url) {
+  try {
+    const parsed = new URL(url);
+    return isLocalHostname(parsed.hostname);
+  } catch (_error) {
+    return false;
+  }
+}
+
+function resolveRequestBaseUrl(req) {
+  const forwardedProto = firstHeaderValue(req.get("x-forwarded-proto"));
+  const host = req.get("host");
+  const proto = forwardedProto || req.protocol || "http";
+  if (!host) {
+    return null;
+  }
+  return `${proto}://${host}`;
+}
+
+function resolveForwardedBaseUrl(req) {
+  const forwardedProto = firstHeaderValue(req.get("x-forwarded-proto"));
+  const forwardedHost = firstHeaderValue(req.get("x-forwarded-host"));
+  if (!forwardedHost) {
+    return null;
+  }
+  return `${forwardedProto || "https"}://${forwardedHost}`;
+}
+
 const absoluteMediaDir = path.resolve(process.cwd(), mediaBaseDir);
+const absoluteFrontendDocsDistDir = path.resolve(process.cwd(), frontendDocsDistDir);
 fs.mkdirSync(path.join(absoluteMediaDir, "profiles"), { recursive: true });
 fs.mkdirSync(path.join(absoluteMediaDir, "uploads"), { recursive: true });
 fs.mkdirSync(path.join(absoluteMediaDir, "thumbnails"), { recursive: true });
 
 app.use("/media", express.static(absoluteMediaDir));
+
+if (frontendDocsEnabled) {
+  if (fs.existsSync(absoluteFrontendDocsDistDir)) {
+    app.use(frontendDocsPath, express.static(absoluteFrontendDocsDistDir));
+  } else {
+    app.get(frontendDocsPath, (_req, res) => {
+      res.status(503).json({
+        success: false,
+        message: "Frontend docs build not found. Run `npm run docs:frontend:build` first.",
+        data: {
+          expectedDir: absoluteFrontendDocsDistDir,
+        },
+      });
+    });
+  }
+}
+
+app.get("/openapi.json", (req, res) => {
+  const hasExplicitOpenApiEnv =
+    Boolean(String(process.env.OPENAPI_SERVER_URL || "").trim()) ||
+    Boolean(String(process.env.OPENAPI_SERVER_URLS || "").trim());
+  const forwardedBaseUrl = resolveForwardedBaseUrl(req);
+  const requestBaseUrl = resolveRequestBaseUrl(req);
+  const hasOnlyLocalConfiguredServers =
+    openApiServerUrls.length > 0 &&
+    openApiServerUrls.every((url) => isLocalServerUrl(url));
+  const effectiveServerUrls = forwardedBaseUrl
+    ? [forwardedBaseUrl]
+    : requestBaseUrl && (!hasExplicitOpenApiEnv || hasOnlyLocalConfiguredServers)
+      ? [requestBaseUrl]
+      : openApiServerUrls;
+
+  res.json({
+    ...openApiSpec,
+    servers: effectiveServerUrls.map((url) => ({ url })),
+  });
+});
+
+app.use(
+  "/docs",
+  swaggerUi.serve,
+  swaggerUi.setup(undefined, {
+    explorer: true,
+    customSiteTitle: "BigWork Internal API Docs",
+    swaggerOptions: {
+      url: "/openapi.json",
+    },
+  }),
+);
 
 app.get("/health", (_req, res) => {
     res.json({

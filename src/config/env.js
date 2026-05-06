@@ -49,6 +49,9 @@ module.exports = {
   maxUploadFileSizeBytes: maxUploadFileSizeMb * 1024 * 1024,
   webpQuality,
   thumbnailWidth,
+  frontendDocsEnabled: parseBoolean(process.env.FRONTEND_DOCS_ENABLED, true),
+  frontendDocsPath: normalizePathPrefix(process.env.FRONTEND_DOCS_PATH, "/frontend-guide"),
+  frontendDocsDistDir: process.env.FRONTEND_DOCS_DIST_DIR || "frontend-docs/build",
   openApiServerUrl: normalizeBaseUrl(
     process.env.OPENAPI_SERVER_URL,
     `http://localhost:${port}`,

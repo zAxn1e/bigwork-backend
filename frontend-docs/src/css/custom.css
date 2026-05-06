@@ -1,0 +1,15 @@
+:root {
+  --ifm-color-primary: #0b6b57;
+  --ifm-color-primary-dark: #095d4c;
+  --ifm-color-primary-darker: #085646;
+  --ifm-color-primary-darkest: #064639;
+  --ifm-color-primary-light: #0d7a62;
+  --ifm-color-primary-lighter: #0e8168;
+  --ifm-color-primary-lightest: #10947a;
+}
+
+.markdown h1,
+.markdown h2,
+.markdown h3 {
+  letter-spacing: 0.2px;
+}

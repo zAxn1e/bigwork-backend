@@ -9,6 +9,10 @@
   "scripts": {
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
+    "docs:frontend:install": "npm --prefix frontend-docs install",
+    "docs:frontend:build": "npm --prefix frontend-docs run build",
+    "dev:with-frontend-docs": "npm run docs:frontend:build && npm run dev",
+    "start:with-frontend-docs": "npm run docs:frontend:build && npm run start",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:push": "prisma db push",
@@ -29,7 +33,8 @@
     "module-alias": "^2.3.4",
     "multer": "^2.0.2",
     "prisma": "^6.19.0",
-    "sharp": "^0.34.4"
+    "sharp": "^0.34.4",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"
