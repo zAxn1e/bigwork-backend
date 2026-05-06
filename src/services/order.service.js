@@ -28,6 +28,10 @@ async function createOrder(payload) {
     throw new AppError(404, "Gig not found");
   }
 
+  if (gig.ownerId === payload.clientId) {
+    throw new AppError(403, "Gig owners cannot order their own gigs");
+  }
+  
   return prisma.order.create({
     data: {
       gigId: payload.gigId,

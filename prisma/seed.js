@@ -91,6 +91,7 @@ async function main() {
     prisma.category.create({ data: { name: "UI/UX Design" } }),
     prisma.category.create({ data: { name: "Content Writing" } }),
     prisma.category.create({ data: { name: "Digital Marketing" } }),
+    prisma.category.create({ data: { name: "Other" } }),
   ]);
 
   const gigs = await Promise.all([
