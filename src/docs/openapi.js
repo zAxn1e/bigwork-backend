@@ -628,6 +628,14 @@ const openApiSpec = {
               },
             },
           },
+          413: {
+            description: "Uploaded file is too large",
+            content: {
+              "application/json": {
+                schema: { $ref: "#/components/schemas/ErrorResponse" },
+              },
+            },
+          },
         },
       },
     },
@@ -957,6 +965,14 @@ const openApiSpec = {
         responses: {
           201: {
             description: "Uploaded and linked to gig",
+          },
+          413: {
+            description: "Uploaded file is too large",
+            content: {
+              "application/json": {
+                schema: { $ref: "#/components/schemas/ErrorResponse" },
+              },
+            },
           },
         },
       },

@@ -27,7 +27,7 @@ function errorHandler(err, _req, res, _next) {
   }
 
   if (err && err.code === "LIMIT_FILE_SIZE") {
-    return res.status(400).json({
+    return res.status(413).json({
       success: false,
       message: "Uploaded file is too large",
     });

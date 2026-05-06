@@ -158,6 +158,10 @@ DATABASE_URL="postgresql://postgres:postgres@localhost:5432/bigwork_mini?schema=
 - WEBP_QUALITY: คุณภาพไฟล์ webp (ค่าเริ่มต้น 95)
 - THUMBNAIL_WIDTH: ความกว้าง thumbnail (ค่าเริ่มต้น 320)
 
+หมายเหตุเรื่องอัปโหลดไฟล์:
+- เมื่อไฟล์เกินลิมิตฝั่งแอป ระบบจะตอบ `413 Payload Too Large`
+- หากเจอ `413` พร้อมข้อความ CORS (`No 'Access-Control-Allow-Origin' header`) มักเป็นสัญญาณว่า reverse proxy/CDN ตีกลับก่อนถึงแอป จึงต้องเช็ก request/body size limit ของ upstream ให้ตรงกับ `MAX_UPLOAD_FILE_SIZE_MB`
+
 ## 6) Prisma Commands
 
 ```bash

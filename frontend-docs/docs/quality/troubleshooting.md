@@ -18,6 +18,14 @@ title: Troubleshooting ที่เจอบ่อย
 - ขนาดไฟล์เกิน MAX_UPLOAD_FILE_SIZE_MB หรือไม่
 - mime type เป็นไฟล์ภาพที่รองรับหรือไม่
 
+เมื่อไฟล์เกิน limit ที่ backend กำหนด ระบบจะตอบ `413 Payload Too Large`
+
+ถ้าเห็น `413` พร้อม CORS error (`No 'Access-Control-Allow-Origin' header`) ให้สงสัยว่า request ถูก reverse proxy/CDN ตีกลับก่อนถึงแอป
+
+- เช็ก upstream body size limit (เช่น nginx `client_max_body_size`, CDN/LB upload/request size limit)
+- ตั้งค่าให้ upstream limit สอดคล้องกับ `MAX_UPLOAD_FILE_SIZE_MB`
+- ถ้าคุม proxy ได้ ควรใส่ CORS headers สำหรับ error responses (โดยเฉพาะ 413) ด้วย
+
 ## รูปไม่แสดง
 
 เช็ก

@@ -279,6 +279,10 @@ Request body example
 
 อัปโหลด media (image) เข้า gig ด้วย `multipart/form-data` field `file`
 
+หมายเหตุ:
+- ถ้าไฟล์เกินลิมิต ระบบจะตอบ `413 Payload Too Large`
+- ถ้าเจอ `413` พร้อม CORS error ให้ตรวจ upstream proxy/CDN request size limit เพิ่มเติม
+
 #### DELETE /gigs/:id/media/:mediaId (ต้องมี JWT และเป็น owner)
 
 ลบ media ของ gig
