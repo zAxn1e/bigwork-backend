@@ -1,0 +1,111 @@
+<mxfile host="app.diagrams.net" modified="2026-05-06T00:00:00.000Z" agent="Codex" version="24.7.17">
+  <diagram id="architecture-audit" name="architecture">
+    <mxGraphModel dx="1600" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <mxCell id="clientGroup" value="Client Layer" style="swimlane;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="20" y="20" width="220" height="700" as="geometry"/>
+        </mxCell>
+        <mxCell id="client1" value="Web / Mobile Client" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;" vertex="1" parent="clientGroup">
+          <mxGeometry x="30" y="60" width="160" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="client2" value="x-api-key + Bearer token&#10;(route dependent)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;" vertex="1" parent="clientGroup">
+          <mxGeometry x="30" y="150" width="160" height="70" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="appGroup" value="App / Middleware Layer" style="swimlane;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="280" y="20" width="360" height="700" as="geometry"/>
+        </mxCell>
+        <mxCell id="app1" value="src/server.js&#10;dotenv + module-alias&#10;app.listen(port)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;" vertex="1" parent="appGroup">
+          <mxGeometry x="30" y="50" width="290" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="app2" value="src/app.js&#10;cors -> express.json -> /media static -> /health" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;" vertex="1" parent="appGroup">
+          <mxGeometry x="30" y="155" width="290" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="app3" value="Pre-apiKeyAuth routes&#10;/auth, /profile, /media-assets, /public" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;" vertex="1" parent="appGroup">
+          <mxGeometry x="30" y="260" width="290" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="app4" value="apiKeyAuth&#10;validates x-api-key when enabled" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="appGroup">
+          <mxGeometry x="30" y="365" width="290" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="app5" value="Post-apiKeyAuth routes&#10;/categories, /gigs, /orders, /reviews, /admin" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;" vertex="1" parent="appGroup">
+          <mxGeometry x="30" y="455" width="290" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="app6" value="Route middleware&#10;requireJwtAuth, uploadMediaAsset,&#10;uploadProfileImage, requireAdmin" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;" vertex="1" parent="appGroup">
+          <mxGeometry x="30" y="560" width="290" height="90" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="routeGroup" value="Route / Domain Layer" style="swimlane;rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="680" y="20" width="360" height="700" as="geometry"/>
+        </mxCell>
+        <mxCell id="route1" value="Routers&#10;auth, profile, media, public,&#10;category, gig, order, review, admin" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b85450;" vertex="1" parent="routeGroup">
+          <mxGeometry x="30" y="60" width="290" height="90" as="geometry"/>
+        </mxCell>
+        <mxCell id="route2" value="Controllers&#10;validate request + shape response" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b85450;" vertex="1" parent="routeGroup">
+          <mxGeometry x="30" y="190" width="290" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="route3" value="Services&#10;business rules, ownership checks,&#10;Prisma calls, filesystem work" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b85450;" vertex="1" parent="routeGroup">
+          <mxGeometry x="30" y="300" width="290" height="90" as="geometry"/>
+        </mxCell>
+        <mxCell id="route4" value="Error flow&#10;asyncHandler -> AppError -> errorHandler" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b85450;" vertex="1" parent="routeGroup">
+          <mxGeometry x="30" y="430" width="290" height="70" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="dataGroup" value="Data / Storage Layer" style="swimlane;rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1080" y="20" width="360" height="700" as="geometry"/>
+        </mxCell>
+        <mxCell id="data1" value="Prisma Client&#10;src/lib/prisma.js" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;" vertex="1" parent="dataGroup">
+          <mxGeometry x="30" y="70" width="290" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="data2" value="PostgreSQL via schema.prisma&#10;User, Category, Gig, MediaAsset,&#10;GigMedia, Order, Review" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;" vertex="1" parent="dataGroup">
+          <mxGeometry x="30" y="180" width="290" height="90" as="geometry"/>
+        </mxCell>
+        <mxCell id="data3" value="Filesystem media store&#10;media/profiles, media/uploads,&#10;media/thumbnails" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;" vertex="1" parent="dataGroup">
+          <mxGeometry x="30" y="320" width="290" height="90" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;" edge="1" parent="1" source="client1" target="app1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;" edge="1" parent="1" source="app1" target="app2">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;" edge="1" parent="1" source="app2" target="app3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;" edge="1" parent="1" source="app3" target="app4">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;" edge="1" parent="1" source="app4" target="app5">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;" edge="1" parent="1" source="app5" target="app6">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;" edge="1" parent="1" source="app6" target="route1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;" edge="1" parent="1" source="route1" target="route2">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;" edge="1" parent="1" source="route2" target="route3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;" edge="1" parent="1" source="route3" target="data1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;" edge="1" parent="1" source="data1" target="data2">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;" edge="1" parent="1" source="route3" target="data3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e13" value="errors" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;endArrow=block;" edge="1" parent="1" source="route2" target="route4">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
