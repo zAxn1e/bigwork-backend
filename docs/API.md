@@ -210,6 +210,29 @@ Query params
 - q (title keyword)
 - categoryId (number)
 - isActive (true หรือ false)
+- page (number, optional)
+- limit (number, optional)
+
+หมายเหตุ:
+- ถ้าไม่ส่ง `page` และ `limit` จะได้ response แบบเดิม (array ของ gigs)
+- ถ้าส่งอย่างน้อยหนึ่งตัว จะได้ response แบบ pagination:
+
+```json
+{
+  "success": true,
+  "data": {
+    "items": [],
+    "pagination": {
+      "page": 1,
+      "limit": 10,
+      "total": 0,
+      "totalPages": 0,
+      "hasNextPage": false,
+      "hasPrevPage": false
+    }
+  }
+}
+```
 
 #### GET /gigs/:id
 

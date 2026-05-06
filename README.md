@@ -310,6 +310,13 @@ curl -H "x-api-key: change-this" \
   "http://localhost:3000/gigs?q=api&isActive=true"
 ```
 
+List gigs with pagination (optional)
+
+```bash
+curl -H "x-api-key: change-this" \
+  "http://localhost:3000/gigs?q=api&isActive=true&page=1&limit=10"
+```
+
 Create category
 
 ```bash

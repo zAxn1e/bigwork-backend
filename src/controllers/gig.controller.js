@@ -17,7 +17,11 @@ const listGigs = asyncHandler(async (req, res) => {
     isActive: parseBooleanQuery(req.query.isActive, "isActive"),
   };
 
-  const gigs = await gigService.listGigs(filters);
+  const page = parseOptionalId(req.query.page, "page");
+  const limit = parseOptionalId(req.query.limit, "limit");
+  const pagination = page !== undefined || limit !== undefined ? { page, limit } : undefined;
+
+  const gigs = await gigService.listGigs(filters, pagination);
   return sendSuccess(res, gigs);
 });
 

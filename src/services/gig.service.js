@@ -41,12 +41,44 @@ async function createGig(payload) {
   });
 }
 
-async function listGigs(filters) {
-  return prisma.gig.findMany({
-    where: buildGigWhere(filters),
-    include: gigInclude,
-    orderBy: { id: "desc" },
-  });
+async function listGigs(filters, pagination) {
+  const where = buildGigWhere(filters);
+
+  if (!pagination) {
+    return prisma.gig.findMany({
+      where,
+      include: gigInclude,
+      orderBy: { id: "desc" },
+    });
+  }
+
+  const page = pagination.page || 1;
+  const limit = pagination.limit || 10;
+  const skip = (page - 1) * limit;
+
+  const [items, total] = await prisma.$transaction([
+    prisma.gig.findMany({
+      where,
+      include: gigInclude,
+      orderBy: { id: "desc" },
+      skip,
+      take: limit,
+    }),
+    prisma.gig.count({ where }),
+  ]);
+
+  const totalPages = total === 0 ? 0 : Math.ceil(total / limit);
+  return {
+    items,
+    pagination: {
+      page,
+      limit,
+      total,
+      totalPages,
+      hasNextPage: page < totalPages,
+      hasPrevPage: page > 1,
+    },
+  };
 }
 
 async function getGigById(id) {
