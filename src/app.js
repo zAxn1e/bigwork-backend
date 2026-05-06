@@ -34,7 +34,7 @@ app.use(cors({
   credentials: true,
   allowedHeaders: ["Content-Type", "x-api-key", "Authorization"],
 }));
-app.options('*', cors());
+app.options('/*', cors());
 app.use(express.json());
 
 function firstHeaderValue(value) {
