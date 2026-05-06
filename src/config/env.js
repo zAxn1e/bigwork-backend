@@ -3,14 +3,6 @@ const maxUploadFileSizeMb = Number(process.env.MAX_UPLOAD_FILE_SIZE_MB) || 5;
 const webpQuality = Number(process.env.WEBP_QUALITY) || 95;
 const thumbnailWidth = Number(process.env.THUMBNAIL_WIDTH) || 320;
 
-function normalizePathPrefix(value, fallback) {
-  const raw = (value || fallback || "").trim();
-  if (!raw) {
-    return "/";
-  }
-  return raw.startsWith("/") ? raw : `/${raw}`;
-}
-
 function normalizeBaseUrl(value, fallback) {
   const raw = (value || fallback || "").trim();
   return raw.replace(/\/+$/, "");
