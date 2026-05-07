@@ -147,8 +147,6 @@ DATABASE_URL="postgresql://postgres:password@localhost:5432/bigwork_mini?schema=
 
 - DATABASE_URL: Prisma PostgreSQL connection string
 - PORT: พอร์ตของ API server (ค่าเริ่มต้น 3000)
-- OPENAPI_SERVER_URL: base URL เดี่ยว fallback สำหรับ OpenAPI/Swagger (เช่น `https://api.example.com`)
-- OPENAPI_SERVER_URLS: รายการ base URL หลายตัว (คั่นด้วย comma) สำหรับแสดงใน Swagger servers dropdown (เช่น `https://api.example.com,https://staging-api.example.com`)
 - INTERNAL_API_KEY: API key ที่บังคับใช้กับทุก endpoint ยกเว้น /health
 - API_KEY_REQUIRED: เปิด/ปิดการบังคับ x-api-key (`true` หรือ `false`)
 - JWT_SECRET: secret สำหรับ sign JWT token
@@ -177,9 +175,9 @@ npm start
 
 ค่าเริ่มต้นเซิร์ฟเวอร์จะรันที่ http://localhost:3000
 
-## Quick Start สำหรับส่งให้เพื่อนในทีม (Backend พร้อมรัน)
+## Quick Start (Backend พร้อมรัน)
 
-ใช้ชุดคำสั่งนี้เพื่อให้เพื่อน clone แล้วรัน backend ได้ทันทีในเครื่อง local
+ใช้ชุดคำสั่งนี้เพื่อให้ clone แล้วรัน backend ได้ทันทีในเครื่อง local
 
 ```bash
 npm install
@@ -190,32 +188,15 @@ npm run db:seed
 npm run dev
 ```
 
-สิ่งที่เพื่อนต้องเปิดเช็กหลังรัน:
+สิ่งที่ควรเปิดเช็กหลังรัน:
 
 - Health: http://localhost:3000/health
-- Swagger: http://localhost:3000/docs
-- OpenAPI: http://localhost:3000/openapi.json
 
 บัญชีทดสอบจาก seed:
 
-- admin: `admin@internal.local` / `Password123!`
-- freelancer: `freelancer1@internal.local` / `Password123!`
-- client: `client1@internal.local` / `Password123!`
-
-Swagger docs
-- UI: http://localhost:3000/docs
-- OpenAPI JSON: http://localhost:3000/openapi.json
-- ถ้าไม่ตั้ง `OPENAPI_SERVER_URL/OPENAPI_SERVER_URLS` ระบบจะพยายาม auto-detect จาก `x-forwarded-proto` และ `x-forwarded-host` (เหมาะกับ nginx reverse proxy)
-- ถ้า deploy แล้วต้องการ fix ค่าเอง ให้ตั้ง `OPENAPI_SERVER_URLS` (หรืออย่างน้อย `OPENAPI_SERVER_URL`) ใน `.env`
-- ถ้ามี `x-forwarded-host` จาก reverse proxy ระบบจะใช้ค่านี้เป็นลำดับแรกเพื่อหลีกเลี่ยงการโชว์ localhost ภายใน
-- แนะนำให้ตั้ง header ใน nginx:
-  - `proxy_set_header X-Forwarded-Host $host;`
-  - `proxy_set_header X-Forwarded-Proto $scheme;`
-
-เอกสารเพิ่มเติม
-- API summary: docs/API.md
-- Frontend integration guide (ละเอียด): docs/FRONTEND_GUIDE.md
-- Team handoff (backend runbook): docs/TEAMMATE_BACKEND_INSTRUCTIONS.md
+- admin: `admin@bigwork.com` / `Password123!`
+- freelancer: `freelancer1@bigwork.com` / `Password123!`
+- client: `client1@bigwork.com` / `Password123!`
 
 ## 8) การ seed ข้อมูล
 
@@ -229,7 +210,7 @@ npm run db:seed
 - 1 admin
 - 2 freelancers
 - 2 clients
-- 5 categories
+- 6 categories
 - หลายรายการ gigs
 - หลายรายการ orders
 - 2 reviews
@@ -306,14 +287,14 @@ curl http://localhost:3000/health
 List gigs (protected)
 
 ```bash
-curl -H "x-api-key: change-this" \
+curl -H "x-api-key: your-api-key-here" \
   "http://localhost:3000/gigs?q=api&isActive=true"
 ```
 
 List gigs with pagination (optional)
 
 ```bash
-curl -H "x-api-key: change-this" \
+curl -H "x-api-key: your-api-key-here" \
   "http://localhost:3000/gigs?q=api&isActive=true&page=1&limit=10"
 ```
 
@@ -322,7 +303,7 @@ Create category
 ```bash
 curl -X POST http://localhost:3000/categories \
   -H "Content-Type: application/json" \
-  -H "x-api-key: change-this" \
+  -H "x-api-key: your-api-key-here" \
   -d '{"name":"Video Editing"}'
 ```
 
@@ -331,7 +312,7 @@ Create order
 ```bash
 curl -X POST http://localhost:3000/orders \
   -H "Content-Type: application/json" \
-  -H "x-api-key: change-this" \
+  -H "x-api-key: your-api-key-here" \
   -d '{"gigId":1,"clientId":4,"message":"Need this in 3 days"}'
 ```
 
@@ -372,31 +353,3 @@ curl -X POST http://localhost:3000/profile/image \
 3. เพิ่ม pagination และ sorting
 4. เพิ่ม automated tests (unit + integration)
 5. เพิ่ม rate limiting และ request logging
-
-## 14) Frontend Guide (ละเอียด)
-
-ถ้าทีม frontend จะเริ่มเชื่อมระบบ ให้ดูขั้นตอนละเอียดที่
-
-- Docusaurus docs site (ผ่าน backend path): /frontend-guide
-- เอกสาร markdown เดิม: docs/FRONTEND_GUIDE.md
-
-หัวข้อที่ครอบคลุมใน guide
-
-- โครงสร้าง frontend ที่แนะนา
-- การตั้งค่า env ฝั่ง frontend
-- การตั้งค่า HTTP client (credentials/include + x-api-key)
-- JWT auth flow (register/login/me/logout)
-- profile/media upload flow
-- แนวทาง state management, route guard, และ checklist ก่อนส่งงาน
-
-วิธีรัน Docusaurus docs แยกเดี่ยว (กรณีไม่พ่วงกับ backend)
-
-หมายเหตุ: แนะนำ Node.js LTS (18/20/22)
-
-```bash
-cd frontend-docs
-npm install
-npm start
-```
-
-ค่าเริ่มต้น: http://localhost:3001
