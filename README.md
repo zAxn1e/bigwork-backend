@@ -26,9 +26,9 @@
 - dotenv
 - bcrypt (ใช้ใน seed ของ sample users)
 - module-alias (ใช้ path แบบ @/...)
-- Swagger UI (เอกสาร API แบบ interactive)
 - jsonwebtoken (JWT auth)
 - multer (upload รูป profile)
+- sharp (บีบอัดรูปภาพและแปลงเป็น webp)
 
 ## 3) โครงสร้างโฟลเดอร์
 
@@ -49,6 +49,7 @@ src/
     profile.controller.js
     review.controller.js
     mediaAsset.controller.js
+    public.controller.js
   lib/
     prisma.js
   middlewares/
@@ -59,21 +60,23 @@ src/
     uploadMediaAsset.js
     uploadProfileImage.js
   routes/
-      media.routes.js
+    media.routes.js
     auth.routes.js
     category.routes.js
     gig.routes.js
     order.routes.js
     profile.routes.js
     review.routes.js
+    public.routes.js
   services/
-      mediaAsset.service.js
+    mediaAsset.service.js
     auth.service.js
     category.service.js
     gig.service.js
     order.service.js
     profile.service.js
     review.service.js
+    public.service.js
   utils/
     asyncHandler.js
     http.js
@@ -81,7 +84,6 @@ src/
     validation.js
 docs/
   API.md
-  FRONTEND_GUIDE.md
 ```
 
 ## 4) ขั้นตอนติดตั้ง

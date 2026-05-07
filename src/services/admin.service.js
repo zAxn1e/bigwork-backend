@@ -183,7 +183,29 @@ async function deleteUser(id, actorUserId) {
     }
   }
 
-  await prisma.user.delete({ where: { id } });
+  await prisma.$transaction(async (tx) => {
+    await tx.review.deleteMany({
+      where: {
+        OR: [
+          { authorId: id },
+          { targetUserId: id },
+        ],
+      },
+    });
+
+    await tx.order.deleteMany({
+      where: {
+        OR: [
+          { clientId: id },
+          { sellerId: id },
+        ],
+      },
+    });
+
+    await tx.user.delete({
+      where: { id },
+    });
+  });
 }
 
 async function listCategories() {
