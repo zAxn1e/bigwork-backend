@@ -3,18 +3,6 @@ const maxUploadFileSizeMb = Number(process.env.MAX_UPLOAD_FILE_SIZE_MB) || 5;
 const webpQuality = Number(process.env.WEBP_QUALITY) || 95;
 const thumbnailWidth = Number(process.env.THUMBNAIL_WIDTH) || 320;
 
-function normalizeBaseUrl(value, fallback) {
-  const raw = (value || fallback || "").trim();
-  return raw.replace(/\/+$/, "");
-}
-
-function parseBaseUrlList(value) {
-  return String(value || "")
-    .split(",")
-    .map((item) => normalizeBaseUrl(item, ""))
-    .filter(Boolean);
-}
-
 function parseBoolean(value, defaultValue) {
   if (value === undefined) {
     return defaultValue;
@@ -40,17 +28,5 @@ module.exports = {
   mediaBaseDir: process.env.MEDIA_BASE_DIR || "media",
   maxUploadFileSizeBytes: maxUploadFileSizeMb * 1024 * 1024,
   webpQuality,
-  thumbnailWidth,
-  openApiServerUrl: normalizeBaseUrl(
-    process.env.OPENAPI_SERVER_URL,
-    `http://localhost:${port}`,
-  ),
-  openApiServerUrls: (() => {
-    const fallback = normalizeBaseUrl(
-      process.env.OPENAPI_SERVER_URL,
-      `http://localhost:${port}`,
-    );
-    const parsed = parseBaseUrlList(process.env.OPENAPI_SERVER_URLS);
-    return parsed.length ? parsed : [fallback];
-  })(),
+  thumbnailWidth
 };

@@ -131,14 +131,14 @@ docker compose down -v
 
 ค่า default ของ DB ใน compose:
 - user: `postgres`
-- password: `postgres`
+- password: `password`
 - db: `bigwork_mini`
 - port: `5432`
 
 ดังนั้น `DATABASE_URL` ใน `.env` ใช้ค่า default นี้ได้ทันที:
 
 ```env
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/bigwork_mini?schema=public"
+DATABASE_URL="postgresql://postgres:password@localhost:5432/bigwork_mini?schema=public"
 ```
 
 ## 5) Environment Variables
