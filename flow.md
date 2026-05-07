@@ -1,6 +1,6 @@
 # Backend System Flow (Mermaid)
 
-เอกสารนี้สรุป system flow ของ backend แบบแยกเป็นส่วน ๆ ครบทุกระบบหลัก
+เอกสารนี้สรุป system flow ของ backend แบบแยกเป็นส่วนๆของระบบหลักด้วย marmaid
 
 ## 1) Backend Architecture Overview
 
@@ -342,13 +342,11 @@ flowchart LR
     Env[.env -> config/env.js]
     OpenAPI["/openapi.json dynamic servers"]
     Swagger["/docs swagger-ui"]
-    FrontDocs["/frontend-guide static if enabled"]
     Seed[prisma/seed.js]
   end
 
   Env --> OpenAPI
   Env --> Swagger
-  Env --> FrontDocs
   Seed --> DB[(PostgreSQL)]
   Seed --> UsersSeed[create ADMIN/FREELANCER/CLIENT]
   Seed --> DomainSeed[create categories/gigs/orders/reviews]
